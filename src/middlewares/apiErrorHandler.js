@@ -5,4 +5,4 @@ const apiErrorHandler = (err, req, res, next) => {
   });
 };
 
-export { apiErrorHandler };
+export default apiErrorHandler;

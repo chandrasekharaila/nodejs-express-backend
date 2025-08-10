@@ -1,7 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
-import { cloudinaryUpload } from "../utils/cloudinaryUpload";
+import { cloudinaryUpload } from "../utils/cloudinaryUpload.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   //get user details from the request
@@ -35,6 +36,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   let avatar;
   let coverImage;
+  console.log("Avatar path:", avatarLocalPath);
+  console.log("Avatar path:", coverImageLocalPath);
 
   avatar = await cloudinaryUpload(avatarLocalPath);
   if (coverImageLocalPath) {
@@ -47,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     password,
     avatar: avatar.url,
-    coverImage: coverImage.url || "",
+    coverImage: coverImage?.url || "",
   });
 
   const createdUser = await User.findById(user._id).select(
