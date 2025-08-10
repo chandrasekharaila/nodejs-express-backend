@@ -39,9 +39,15 @@ const registerUser = asyncHandler(async (req, res) => {
   console.log("Avatar path:", avatarLocalPath);
   console.log("Avatar path:", coverImageLocalPath);
 
-  avatar = await cloudinaryUpload(avatarLocalPath);
+  avatar = await cloudinaryUpload(
+    avatarLocalPath,
+    req.files.avatar[0].mimetype
+  );
   if (coverImageLocalPath) {
-    coverImage = await cloudinaryUpload(coverImageLocalPath);
+    coverImage = await cloudinaryUpload(
+      coverImageLocalPath,
+      req.files.coverImage[0].mimetype
+    );
   }
 
   const user = await User.create({
