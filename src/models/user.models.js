@@ -76,9 +76,15 @@ userSchema.methods.generateJWT = function () {
   );
 };
 
-userSchema.methods.getAccessToken = function () {
+userSchema.methods.getRefreshToken = function () {
   return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRY,
+  });
+};
+
+userSchema.methods.getAccessToken = function () {
+  return jwt.sign({ _id: this._id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
   });
 };
 

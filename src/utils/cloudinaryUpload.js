@@ -16,11 +16,13 @@ const cloudinaryUpload = async (localfilepath, mimetype) => {
       throw new ApiError(400, "No file path provided");
     }
 
-    let resourceType = "auto"; // Let Cloudinary detect (video, image, raw, etc.)
+    let resourceType = "auto";
     if (mimetype.startsWith("image/")) {
       resourceType = "image";
     } else if (mimetype.startsWith("video/")) {
       resourceType = "video";
+    } else {
+      throw new ApiError(400, "Upload Supported file format");
     }
 
     const response = await cloudinary.uploader.upload(localfilepath, {
@@ -31,7 +33,7 @@ const cloudinaryUpload = async (localfilepath, mimetype) => {
     return response;
   } catch (error) {
     deleteLocalFile(localfilepath);
-    throw new ApiError(500, "Failed to upload file");
+    throw new ApiError(500, error.message);
   }
 };
 
